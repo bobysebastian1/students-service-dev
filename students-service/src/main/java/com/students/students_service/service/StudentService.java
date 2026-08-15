@@ -46,7 +46,7 @@ public class StudentService implements StudentsService {
     public List<StudentEntity> getStudentByName(String name) {
         List<StudentEntity> students = studentRepository.findByNameIgnoreCase(name);
         if (students.isEmpty()) {
-            throw new ResourceNotFoundException("Student not found with the name");
+            throw new ResourceNotFoundException("Student not found with the name: " + name);
         }
         return students;
     }
