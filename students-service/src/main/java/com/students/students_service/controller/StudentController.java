@@ -3,6 +3,7 @@ package com.students.students_service.controller;
 import com.students.students_service.dto.ApiResponse;
 import com.students.students_service.entity.SemesterResultEntity;
 import com.students.students_service.entity.StudentEntity;
+import com.students.students_service.exception.ResourceNotFoundException;
 import com.students.students_service.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,18 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    // GET /api/students/search?name=alex
+    @GetMapping("/search")
+    public ResponseEntity<?> getStudentsByName(@RequestParam("name") String name) {
+        // Trim to handle empty spaces like ?name=
+        if (name == null || name.trim().isEmpty()) {
+            throw new ResourceNotFoundException("Search name cannot be empty");
+        }
+
+        List<StudentEntity> students = studentService.getStudentByName(name.trim());
+        return ResponseEntity.ok(students);
+    }
+
     // 4. Add or update a semester result for an existing student
     @PostMapping("/{id}/semesters")
     public ResponseEntity<StudentEntity> addSemesterResult(
@@ -52,7 +65,8 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    // 5. Update personal details (name, email, department) of an existing student
+    // 5. Update personal details (name, email, department) and semester results
+    // combined for an existing student
     @PutMapping("/{id}/details")
     public ResponseEntity<StudentEntity> updateStudentDetails(
             @PathVariable Long id,
@@ -60,7 +74,7 @@ public class StudentController {
         StudentEntity updatedStudent = studentService.updateStudentDetails(id, studentEntity);
         return ResponseEntity.ok(updatedStudent);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.deleteStudent(id));

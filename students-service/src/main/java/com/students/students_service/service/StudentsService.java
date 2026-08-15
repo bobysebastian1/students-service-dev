@@ -7,9 +7,16 @@ import java.util.List;
 
 public interface StudentsService {
     StudentEntity createStudent(StudentEntity student);
+
     List<StudentEntity> getAllStudents();
+
     StudentEntity getStudentById(Long id);
+
+    List<StudentEntity> getStudentByName(String name);
+
     StudentEntity updateStudent(Long studentId, SemesterResultEntity semesterResult);
+
     StudentEntity updateStudentDetails(Long studentId, StudentEntity student);
+
     ApiResponse deleteStudent(Long studentId);
 }

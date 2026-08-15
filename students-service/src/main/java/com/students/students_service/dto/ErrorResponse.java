@@ -1,6 +1,5 @@
 package com.students.students_service.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,12 +52,12 @@ public class ErrorResponse {
 		this.message = message;
 	}
 
-	// @Override
-	// public String toString() {
-	// return "ErrorResponse [timestamp=" + timestamp + ", status=" + status + ",
-	// error=" + error + ", message="
-	// + message + "]";
-	// }
+	@Override
+	public String toString() {
+		return "ErrorResponse [timestamp=" + timestamp + ", status=" + status + ", error=" + error + ", message="
+				+ message + "]";
+	}
+
 	public static Object builder() {
 		// TODO Auto-generated method stub
 		return null;

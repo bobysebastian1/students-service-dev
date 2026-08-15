@@ -43,6 +43,15 @@ public class StudentService implements StudentsService {
     }
 
     @Override
+    public List<StudentEntity> getStudentByName(String name) {
+        List<StudentEntity> students = studentRepository.findByNameIgnoreCase(name);
+        if (students.isEmpty()) {
+            throw new ResourceNotFoundException("Student not found with the name");
+        }
+        return students;
+    }
+
+    @Override
     @Transactional
     public StudentEntity updateStudent(Long studentId, SemesterResultEntity semesterResult) {
         StudentEntity student = getStudentById(studentId);
@@ -61,7 +70,7 @@ public class StudentService implements StudentsService {
         existingStudent.setEmail(incomingData.getEmail());
         existingStudent.setDepartment(incomingData.getDepartment());
         existingStudent.getSemesterResults().clear();
-        
+
         if (incomingData.getSemesterResults() != null) {
             for (SemesterResultEntity semester : incomingData.getSemesterResults()) {
                 semester.setStudent(existingStudent);
@@ -70,7 +79,8 @@ public class StudentService implements StudentsService {
             existingStudent.recalculateOverallCgpa();
         }
 
-        // 3. Save updated entity (keeps existing id, overallCgpa, and semesterResults intact)
+        // 3. Save updated entity (keeps existing id, overallCgpa, and semesterResults
+        // intact)
         return studentRepository.saveAndFlush(existingStudent);
     }
 
