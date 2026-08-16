@@ -6,6 +6,7 @@ import com.students.students_service.entity.StudentEntity;
 import java.util.List;
 
 public interface StudentsService {
+
     StudentEntity createStudent(StudentEntity student);
 
     List<StudentEntity> getAllStudents();
@@ -13,6 +14,8 @@ public interface StudentsService {
     StudentEntity getStudentById(Long id);
 
     List<StudentEntity> getStudentByName(String name);
+
+    List<StudentEntity> getStudentByNameLike(String name);
 
     StudentEntity updateStudent(Long studentId, SemesterResultEntity semesterResult);
 

@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/students")
@@ -44,7 +42,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    // GET /api/students/search?name=alex
+    // 4. Retrieve a list of students by their names
     @GetMapping("/search")
     public ResponseEntity<?> getStudentsByName(@RequestParam("name") String name) {
         // Trim to handle empty spaces like ?name=
@@ -56,7 +54,7 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    // 4. Add or update a semester result for an existing student
+    // 5. Add or update a semester result for an existing student
     @PostMapping("/{id}/semesters")
     public ResponseEntity<StudentEntity> addSemesterResult(
             @PathVariable Long id,
@@ -65,7 +63,7 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    // 5. Update personal details (name, email, department) and semester results
+    // 6. Update personal details (name, email, department) and semester results
     // combined for an existing student
     @PutMapping("/{id}/details")
     public ResponseEntity<StudentEntity> updateStudentDetails(
@@ -75,8 +73,21 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
+    // 7. Delete a student
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.deleteStudent(id));
+    }
+
+    // 8. Retrieve a list of students by their names
+    @GetMapping("/nameSearch")
+    public ResponseEntity<?> getStudentsByNameLike(@RequestParam("name") String name) {
+        // Trim to handle empty spaces like ?name=
+        if (name == null || name.trim().isEmpty() || name.length() < 3) {
+            throw new ResourceNotFoundException("Search name cannot be empty or less than 3 characters");
+        }
+
+        List<StudentEntity> students2 = studentService.getStudentByNameLike(name.trim());
+        return ResponseEntity.ok(students2);
     }
 }

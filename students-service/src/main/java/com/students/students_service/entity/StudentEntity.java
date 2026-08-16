@@ -15,7 +15,7 @@ public class StudentEntity {
     private String name;
     private String email;
     private String department;
-    
+
     private Double overallCgpa;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -36,7 +36,7 @@ public class StudentEntity {
 
     // Helper method to add a semester result and auto-calculate overall CGPA
     public void addSemesterResult(SemesterResultEntity result) {
-    	if (result != null) {
+        if (result != null) {
             semesterResults.add(result);
             result.setStudent(this); // Crucial for database foreign key
             recalculateOverallCgpa();
@@ -115,7 +115,7 @@ public class StudentEntity {
     }
 
     public void setSemesterResults(List<SemesterResultEntity> semesterResults) {
-    	this.semesterResults.clear();
+        this.semesterResults.clear();
         if (semesterResults != null) {
             for (SemesterResultEntity result : semesterResults) {
                 addSemesterResult(result);
